@@ -127,13 +127,24 @@ $.fn.dataTableExt.afnFiltering.push(
                     return "<a target='_blank' href='"+ row['url'] +"'>"+row['title']+"</a>";
 	            },
 	            "aTargets": [2]
-        	},
+        	},         
+            {
+                "mRender": function( data, type, row ) {
+                    return "￥"+row['price'];
+                },
+                "aTargets": [4]
+            },
         	{
         		"mRender": function( data, type, row ) {
+                    var str="";
         			if(row['id']%3==0 || row['id']%5==0){
-        				return "假货";	
+        				str += "<span class='badge'>假货</span>";	
         			}
-					return "";                    
+                    if (row['price']<1000){
+                        str += "<span class='badge'>超低价</span>"; 
+
+                    }
+					return str;                    
 	            },
 	            "aTargets": [6]
         	}
