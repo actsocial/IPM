@@ -1,6 +1,7 @@
 class AnalyticsController < ApplicationController
 
   def index
+    @active = 'reports'
     respond_to do |format|
       format.html # index.html.erb
     end

@@ -2,6 +2,8 @@ class BrandsController < ApplicationController
   # GET /brands
   # GET /brands.json
   def index
+    @active = 'settings'
+
     @brands = Brand.all
 
     respond_to do |format|
