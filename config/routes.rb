@@ -3,6 +3,10 @@ IPM::Application.routes.draw do
   resources :brands
   
   get "analytics/index"
+  
+  get "query/query"
+  
+  get "query/index"
 
 
   # The priority is based upon order of creation:

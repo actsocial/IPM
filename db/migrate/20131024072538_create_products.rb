@@ -8,6 +8,7 @@ class CreateProducts < ActiveRecord::Migration
       t.string :status
       t.string :action
       t.string :platform
+      t.string :url
       t.references :brand
 
       t.timestamps
