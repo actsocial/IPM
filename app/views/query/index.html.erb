@@ -1,5 +1,5 @@
 
-<form class="form-inline" role="form">
+<div class="form-inline" role="form">
   <div class="form-group">
     <select  id="brand-select">
     <% @brands.each do |brand|%>
@@ -8,7 +8,7 @@
     </select>
   </div>
   <div class="form-group">
-    <input type="email" class="form-control" id="exampleInputEmail2" placeholder="input keywords">
+    <input type="input" class="form-control" id="keyword-filter" placeholder="input keywords">
   </div>
   <div class="form-group">
     <div class="row">
@@ -18,7 +18,7 @@
         </div>
         <div class="col-lg-1">-</div>
         <div class="col-lg-2">
-         <input type="input" class="form-control" id="price_start" placeholder="">
+         <input type="input" class="form-control" id="price_end" placeholder="">
         </div>
     </div>
   </div>
@@ -28,16 +28,18 @@
     </label>
   </div>
   <button type="submit" class="btn btn-default">Search</button>
-</form>
+</div>
 
 <table id="resultTable" class="table">
 	<thead>
         <tr>
+        	<th></th>
             <th>Image</th>
             <th>Title</th>
             <th>Location</th>
             <th>Price</th>
             <th>Seller</th>
+            <th>Tag</th>
             <th>Status</th>
             <th>Action</th>
         </tr>
@@ -46,38 +48,88 @@
     </tbody>
 </table>
 <script>
+$.fn.dataTableExt.afnFiltering.push(
+    function( oSettings, aData, iDataIndex ) {
+        var iMin = document.getElementById('price_start').value * 1;
+        var iMax = document.getElementById('price_end').value * 1;
+        var iVersion = aData[4] == "-" ? 0 : aData[4]*1;
+        if ( iMin == "" && iMax == "" )
+        {
+            return true;
+        }
+        else if ( iMin == "" && iVersion < iMax )
+        {
+            return true;
+        }
+        else if ( iMin < iVersion && "" == iMax )
+        {
+            return true;
+        }
+        else if ( iMin < iVersion && iVersion < iMax )
+        {
+            return true;
+        }
+        return false;
+    }
+);
 	$(document).ready(function() {
-    $('#resultTable').dataTable({
+    var oTable = $('#resultTable').dataTable({
     	 "sDom": '<"div">rt<"div"lp>',
     	"bProcessing": true,
         "sAjaxSource": '/query/query.json',
         "aoColumns": [
+        	{"mData":null},
             { "mData": "image" },
             { "mData": "title" },
             { "mData": "location" },
             { "mData": "price" },
             { "mData": "seller" },
+            { "mData": null },
             { "mData": "status" },
             { "mData": "action" }
         ],
         "aoColumnDefs": [
         	{
         		"mRender": function( data, type, row ) {
-                    return "<img src='"+ row['image'] +"'>";
+                    return "<input type='checkbox' data-id='"+ row['id'] +"'>";
 	            },
 	            "aTargets": [0]
         	},
         	{
         		"mRender": function( data, type, row ) {
-                    return "<a target='_blank' href='"+ row['url'] +"'>"+row['title']+"</a>";
+                    return "<img src='"+ row['image'] +"'>";
 	            },
 	            "aTargets": [1]
+        	},
+        	{
+        		"mRender": function( data, type, row ) {
+                    return "<a target='_blank' href='"+ row['url'] +"'>"+row['title']+"</a>";
+	            },
+	            "aTargets": [2]
+        	},
+        	{
+        		"mRender": function( data, type, row ) {
+        			if(row['id']%3==0 || row['id']%5==0){
+        				return "假货";	
+        			}
+					return "";                    
+	            },
+	            "aTargets": [6]
         	}
         ],
         "fnServerParams": function ( aoData ) {
             aoData.push( { "name":"brand_id", "value": $("#brand-select").val()} );
         }
     });
+    
+    
+    $("#keyword-filter").keyup( function () {
+        /* Filter on the column (the index) of this element */
+        oTable.fnFilter( this.value, 2 );
+    } );
+    
+    $('#price_start').keyup( function() { oTable.fnDraw(); } );
+    $('#price_end').keyup( function() { oTable.fnDraw(); } );
     
 //    $('#resultTable tbody').on('dblclick', 'tr', function () {
 //    	

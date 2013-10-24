@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 class QueryController < ApplicationController
 
   def index
@@ -8,8 +9,9 @@ class QueryController < ApplicationController
   end
   
   def query
+    ps = Product.where(params.delete("_")).all
     respond_to do |format|
-      format.json { render json: {:aaData =>Product.where(params.delete("_")).all} }
+      format.json { render json: {:aaData =>ps} }
     end
   end
   
