@@ -1,6 +1,8 @@
 class QueryController < ApplicationController
 
   def index
+    @active = 'products'
+
     @brands = Brand.all
     respond_to do |format|
       format.html # index.html.erb
