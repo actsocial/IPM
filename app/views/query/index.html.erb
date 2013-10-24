@@ -1,7 +1,7 @@
 
 <div class="form-inline" role="form">
   <div class="form-group">
-    <select  id="brand-select">
+    <select  id="brand-select" class="form-control">
     <% @brands.each do |brand|%>
         <option value="<%= brand.id %>"><%= brand.name%></option>
     <% end%>
@@ -27,7 +27,7 @@
       <input type="checkbox">Taobao
     </label>
   </div>
-  <button type="submit" class="btn btn-default">Search</button>
+  <button class="btn btn-danger" id="complain">Complain</button>
 </div>
 
 <table id="resultTable" class="table">
@@ -47,6 +47,27 @@
     <tbody>
     </tbody>
 </table>
+
+<div class="modal fade">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h4 class="modal-title">Confirm</h4>
+      </div>
+      <div class="modal-body">
+        <p><span id="selectedCount" style="color:red"></span> links selected.</p>
+        <p id="selectedLinks"></p>
+        <textarea class="form-control" rows="3"  placeholder="Please input some reason here"></textarea>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary">Submit</button>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
 <script>
 $.fn.dataTableExt.afnFiltering.push(
     function( oSettings, aData, iDataIndex ) {
@@ -130,6 +151,24 @@ $.fn.dataTableExt.afnFiltering.push(
     
     $('#price_start').keyup( function() { oTable.fnDraw(); } );
     $('#price_end').keyup( function() { oTable.fnDraw(); } );
+    
+    $("#complain").on('click',function(){
+    	var checked = $("#resultTable input:checked");
+    	
+    	$("#selectedCount").html(checked.size());
+    	var links = "<ul>";
+    	for (var i=0; i < checked.size(); i++) {
+    		if(i > 0){
+    			links += "<br>";
+    		}
+    		links+= "<li>";
+		  links += $(checked[i]).closest("tr").find("a").attr("href");
+		  links+= "</li>";
+		};
+		links += "</ul>";
+    	$("#selectedLinks").html(links);
+    	$('.modal').modal();
+    });
     
 //    $('#resultTable tbody').on('dblclick', 'tr', function () {
 //    	
