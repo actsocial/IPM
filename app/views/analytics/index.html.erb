@@ -1,3 +1,28 @@
 <h1>Analytics</h1>
 
 
+<ul class="nav nav-pills nav-stacked col-lg-1">
+  <li class="active"><a href="#" data-id="1">卡地亚</a></li>
+</ul>
+<ul id="analyticsTab" class="nav nav-tabs nav-justified">
+  <li class="active"><a href="#" action="solved">处理结果</a></li>
+  <li><a href="#" action="calculation">投诉统计</a></li>
+  <li><a href="#" action="seller">卖家排行</a></li>
+  <li><a href="#" action="closed">关店率</a></li>
+  <li><a href="#" action="location">位置</a></li>
+  <li><a href="#" action="prevent">损失预防</a></li>
+</ul>
+<div id="analytics-content"></div>
+
+<script>
+	$(function(){
+		$('#analyticsTab a').click(function (e) {
+		  e.preventDefault();
+		  $("#analytics-content").html("");
+		  $.get("/analytics/"+$(this).attr("action"),function(data){
+		  	$("#analytics-content").html(data);
+		  });
+		  $(this).tab('show');
+		});
+	});
+</script>

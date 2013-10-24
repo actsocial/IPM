@@ -4,9 +4,22 @@ IPM::Application.routes.draw do
   
   get "analytics/index"
   
+  get "analytics/solved"
+  
+  get "analytics/calculation"
+  
+  get "analytics/seller"
+  
+  get "analytics/closed"
+  
+  get "analytics/location"
+  
+  get "analytics/prevent"
+  
   get "query/query"
   
   get "query/index"
+  
 
 
   # The priority is based upon order of creation:
