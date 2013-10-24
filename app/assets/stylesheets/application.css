@@ -19,3 +19,6 @@ border-style: solid;
 border-width: 1px 0;
 margin: 10px;
 }
+#resultTable img{
+	width: 50px;
+}
