@@ -1,0 +1,46 @@
+<%= form_for(@brand, :html => {:class=>'col-lg-4'}) do |f| %>
+  <% if @brand.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@brand.errors.count, "error") %> prohibited this brand from being saved:</h2>
+
+      <ul>
+      <% @brand.errors.full_messages.each do |msg| %>
+        <li><%= msg %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="form-group">
+  	<label for="name">Brand Name</label>
+    <input type="text" class="form-control" id="name" name="brand[name]" value="<%=@brand.name%>" placeholder="Enter Name">
+  </div>
+  <div class="form-group">
+  	<label for="name">Email Keyword</label>
+    <input type="text" class="form-control" id="keyword" name="brand[keyword]" value="<%=@brand.keyword%>" placeholder="Enter Keyword">
+  </div>
+  <div class="form-group">
+    <%= f.label :enable %><br />
+    <%= f.check_box :enable %>
+  </div>
+  <div class="form-group">
+  	<label>Rules</label>
+	  <table class="table table-striped">
+	  	<thead>
+	  		<th>Attribute</th>
+	  		<th>Operator</th>
+	  		<th>Value</th>
+	  		<th>Tag</th>
+	  	</thead>>
+	  <% @brand.rules.each do |rule|%>
+	  	<tr>
+	  		<td><%=rule.name%></td>
+	  		<td><%=rule.operator%></td>
+	  		<td><%=rule.value%></td>
+	  		<td class="is-visible"><%=rule.tag%></td>
+	  	</tr>
+	  <% end %>
+	  </table>
+	</div>
+  <button type="submit" class="btn btn-default">Submit</button>
+<% end %>

@@ -1,0 +1,11 @@
+<h1>Analytics</h1>
+
+<form class="form-inline" role="form">
+	<select class="form-control">
+		<%@brands.each do |brand|%>
+			<option value="<%= brand.id %>"><%= brand.name%></option>
+		<% end%>
+	</select>
+	<button type="button" class="btn btn-info">Search</button>
+		
+</form>
